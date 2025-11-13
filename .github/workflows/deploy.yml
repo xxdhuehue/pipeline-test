@@ -42,7 +42,7 @@ jobs:
           host: ${{ secrets.ALIYUN_HOST }}       # 服务器 IP
           username: ${{ secrets.ALIYUN_USERNAME }} # 登录用户名
           key: ${{ secrets.ALIYUN_SSH_KEY }}      # SSH 私钥
-          source: "/dist/**"                       # 本地待传输的文件（Angular 构建产物）
+          source: "dist/**"                       # 本地待传输的文件（Angular 构建产物）
           target: /www/wwwroot/next/             # 服务器临时目录（避免直接覆盖）
           strip_components: 1                     # 移除 dist/ 目录层级，只传输内部文件
 
