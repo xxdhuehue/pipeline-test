@@ -34,7 +34,7 @@ jobs:
 
  
       - name: Build Angular app
-        run: npm run build -- --configuration production   
+        run: pnpm run build  
 
       # 步骤 6：部署到阿里云服务器（通过 SSH 传输文件）
       - name: Deploy to Aliyun server
@@ -43,24 +43,10 @@ jobs:
           host: ${{ secrets.ALIYUN_HOST }}       # 服务器 IP
           username: ${{ secrets.ALIYUN_USERNAME }} # 登录用户名
           key: ${{ secrets.ALIYUN_SSH_KEY }}      # SSH 私钥
-          source: "dist/**"                       # 本地待传输的文件（Angular 构建产物）
-          target: "/tmp/next-dist"             # 服务器临时目录（避免直接覆盖）
+          source: "/dist/**"                       # 本地待传输的文件（Angular 构建产物）
+          target: /www/wwwroot/next/             # 服务器临时目录（避免直接覆盖）
           strip_components: 1                     # 移除 dist/ 目录层级，只传输内部文件
 
-      # 步骤 7：在服务器上执行命令（移动文件到 Nginx 目录）
-      - name: Move files to Nginx root
-        uses: appleboy/ssh-action@v1.0.3  # 通过 SSH 执行服务器命令
-        with:
-          host: ${{ secrets.ALIYUN_HOST }}
-          username: ${{ secrets.ALIYUN_USERNAME }}
-          key: ${{ secrets.ALIYUN_SSH_KEY }}
-          script: |
-           
-            mv /tmp/next-dist/* /www/wwwroot/next/
-            
-            # 清理临时文件
-            rm -rf /tmp/next-dist
-            
-            # 重启 Nginx（确保配置生效）
-            systemctl restart nginx
+ 
+      
             
