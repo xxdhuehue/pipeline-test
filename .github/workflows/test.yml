@@ -1,0 +1,51 @@
+name: Learn Pipeline
+
+#Matrix 
+# run the same test/deployment logic across many environments
+# corss-browser or OS testing
+# Multi-language version support (nodejs python)
+# Testing Apps in different configuarions 
+
+on:
+  workflow_dispatch:
+
+    
+jobs:
+    test:
+        runs-on: ${{ matrix.os }}
+
+        permissions:
+            id-token: write
+            contents: read
+
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+                node: [14, 16]
+                exclude:
+                    - os: windows-latest
+                      node: 15
+        
+        # strategy:
+        #     matrix:
+        #         include:
+        #             - os: ubuntu-latest
+        #               node: 16
+        #             - os: windows-latest
+        #               node: 14
+        
+
+        # generate:
+        #     runs-on: ubuntu-latest
+        #     output:
+        #         matrix: ${{ steps.set.outputs.matrix }}
+        #     steps:
+        #         - id: set
+        #           runs: echo "matrix={\"os\": [\"ubuntu-latest\", \"windows-latest\"]}" >> $GITHUB_OUTPUT
+        steps:
+            - uses: action/checkout@v3
+
+            - name: Setup Node.js ${{ matrix.node }}
+              uses: action/setup-node@v4
+              with:
+                node-version: ${{ matrix.node }}
