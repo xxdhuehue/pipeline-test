@@ -34,14 +34,26 @@ jobs:
  
       - name: Build app
         run: pnpm run build  
+        
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist/
 
   deploy:
     needs: build
     runs-on: ubuntu-latest   
 
     steps:  
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-files
+          path: dist/
+          
       - name: Deploy to Aliyun server
-        uses: appleboy/scp-action@v0.1.7  
+        uses: appleboy/scp-action@v0.1.9
         with:
           host: ${{ secrets.ALIYUN_HOST }}     
           username: ${{ secrets.ALIYUN_USERNAME }}  
