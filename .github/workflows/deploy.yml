@@ -53,7 +53,7 @@ jobs:
           path: dist/
           
       - name: Deploy to Aliyun server
-        uses: appleboy/scp-action@v0.1.9
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.ALIYUN_HOST }}     
           username: ${{ secrets.ALIYUN_USERNAME }}  
