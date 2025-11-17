@@ -9,7 +9,7 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest   
 
     steps:
@@ -35,7 +35,10 @@ jobs:
       - name: Build app
         run: pnpm run build  
 
-      # 步骤 6：部署到阿里云服务器（通过 SSH 传输文件）
+  deploy:
+    runs-on: ubuntu-latest   
+    
+    steps:  
       - name: Deploy to Aliyun server
         uses: appleboy/scp-action@v0.1.7  
         with:
